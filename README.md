@@ -1,1 +1,0 @@
-AI Ticket Assistant Apllication

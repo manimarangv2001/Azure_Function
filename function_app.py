@@ -1,23 +1,6 @@
 import azure.functions as func
 import logging
-import os
-from langchain_core.messages import HumanMessage
-from langchain_openai import AzureChatOpenAI
-
-
-
-
-
-def openAIFunction(question):
-    model = AzureChatOpenAI(
-        openai_api_version=os.environ["AZURE_OPENAI_API_VERSION"],
-        azure_deployment=os.environ["AZURE_OPENAI_CHAT_DEPLOYMENT_NAME"],
-    )
-    message = HumanMessage(
-        content=question
-    )
-    answer=model.invoke([message])
-    return answer
+from Azure_OpenAI import configure_openai
 
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
@@ -36,8 +19,8 @@ def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
             question = req_body.get('question')
 
     if question:
-        answer=openAIFunction(question).content
-        return func.HttpResponse(answer)
+        answer=configure_openai.openAIFunction(question)
+        return func.HttpResponse(str(answer))
     else:
         return func.HttpResponse(
              "This HTTP triggered function executed successfully. Pass a question in the query string or in the request body for a personalized response.",

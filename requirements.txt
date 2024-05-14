@@ -7,3 +7,5 @@ langchain
 openai
 langchain-openai
 requests
+langchain-chroma
+langchainhub
